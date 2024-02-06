@@ -1,22 +1,18 @@
-# X = 5k + 3l
-def find_min_lk(x):
-    for n in range(x // 5 + 1):
-        for l in range(5):
-            k = (x - 3 * l) // 5
-            if k >= 0 and (3 * l + 5 * k) == x:
-                return l, k
+def find_min_bags(n):
+    bags_5kg = n // 5
+    while bags_5kg >= 0:
+        remaining_sugar = n - (5 * bags_5kg)
+        if remaining_sugar % 3 == 0:
+            bags_3kg = remaining_sugar // 3
+            return bags_3kg + bags_5kg
+        bags_5kg -= 1
     return -1
 
-# 사용자로부터 입력 받기
 user_input = int(input())
 
-# 최소의 L, K 찾기
-result = find_min_lk(user_input)
+result = find_min_bags(user_input)
 
-# 결과 출력
 if result != -1:
-    l, k = result
-    # print(f"X를 표현하는 최소의 L, K 값은 L={l}, K={k}입니다.")
-    print(l+k)
+    print(result)
 else:
     print(-1)
