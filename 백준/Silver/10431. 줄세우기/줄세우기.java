@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
-public class Main {
+public class Backjoon10431sol1 {
 
     public static void main(String[] args) {
 
@@ -41,11 +41,36 @@ public class Main {
                     position++;
                 }
                 moveCount += num - position;
+                // 틀린 풀이 => 배열을 한칸씩 옮길때 누구를 먼저 옮길지 잘 정해야 함.
+//                if( position != num ) {
+//                    int temp1 = countArray[num];
+//                    int temp2 = position;
+//                    while ( position != num ) {
+//                        countArray[position+1] = countArray[position];
+//                        position++;
+//                    }
+//                    countArray[temp2] = temp1;
+//                }
+                // while 문으로 solve
+//                if (position != num) {
+//                    int temp = countArray[num];  // 이동할 값을 임시로 저장
+//
+//                    // 뒤에서부터 한 칸씩 값을 밀어내기 (num -> position)
+//                    int index = num;
+//                    while (index > position) {
+//                        countArray[index] = countArray[index - 1];  // 한 칸씩 뒤로 밀어냄
+//                        index--;
+//                    }
+//
+//                    // 빈 자리에 임시로 저장한 값을 삽입
+//                    countArray[position] = temp;
+//                }
 
+                // 학생들을 뒤로 밀어내기 위한 작업
                 if ( position != num ) {
                     int temp = countArray[num];
 
-                    // 위치부터 num 까지 한 칸씩 뒤로 밀기
+                    // 위치부터 num까지 한 칸씩 뒤로 밀기
                     for (int j = num; j > position; j--) {
                         countArray[j] = countArray[j - 1];
                     }
