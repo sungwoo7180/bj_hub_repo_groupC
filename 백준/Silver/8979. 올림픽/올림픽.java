@@ -1,78 +1,56 @@
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        // 입력 : 국가수와 알고 싶은 국가 번호
-        int tryNumber = scanner.nextInt();
-        int countryNumber = scanner.nextInt();
-//        System.out.println(tryNumber);
-//        System.out.println(countryNumber);
 
-        // 메달 데이터 저장
-        int[][] medalArray = new int[tryNumber][4];
+        // 입력: 국가 수와 등수를 알고 싶은 국가 번호
+        int n = scanner.nextInt(); // 국가 수
+        int k = scanner.nextInt(); // 등수를 알고 싶은 국가 번호
 
-        int index = 0;
-        // 입력처리
-        for (int i = 0; i < tryNumber; i++) {
-            // 각 국가의 메달 데이터 입력
-            int countryId = scanner.nextInt();
-            int gold = scanner.nextInt();
-            int silver = scanner.nextInt();
-            int bronze = scanner.nextInt();
+        // 메달 데이터를 저장할 배열
+        int[][] medalArray = new int[n][4];
 
-            medalArray[i][0] = countryId;
-            medalArray[i][1] = gold;
-            medalArray[i][2] = silver;
-            medalArray[i][3] = bronze;
+        for (int i = 0; i < n; i++) {
+            medalArray[i][0] = scanner.nextInt(); // 국가 번호
+            medalArray[i][1] = scanner.nextInt(); // 금메달 수
+            medalArray[i][2] = scanner.nextInt(); // 은메달 수
+            medalArray[i][3] = scanner.nextInt(); // 동메달 수
         }
 
-        // 테스트 출력
-//        for (int i = 0; i < tryNumber; i++) {
-//            System.out.println("Country: " + medalArray[i][0] +
-//                    ", Gold: " + medalArray[i][1] +
-//                    ", Silver: " + medalArray[i][2] +
-//                    ", Bronze: " + medalArray[i][3]);
-//        }
-
-        // 람다 표현식으로 2차원 배열 정렬
+        // 정렬: 금 > 은 > 동 기준 내림차순
         Arrays.sort(medalArray, (a, b) -> {
             if (b[1] != a[1]) return b[1] - a[1]; // 금메달 비교
             if (b[2] != a[2]) return b[2] - a[2]; // 은메달 비교
             return b[3] - a[3]; // 동메달 비교
         });
 
-        // 람다 표현식 X, 익명 클래스로 구현
-//        Arrays.sort(medalArray, new Comparator<int[]>() {
-//            @Override
-//            public int compare(int[] a, int[] b) {
-//                if (b[1] != a[1]) {
-//                    return b[1] - a[1]; // 금메달 비교
-//                }
-//                if (b[2] != a[2]) {
-//                    return b[2] - a[2]; // 은메달 비교
-//                }
-//                return b[3] - a[3]; // 동메달 비교
-//            }
-//        });
-        int number = 0;
-        while (countryNumber != medalArray[number][0]) {
-            number++;
+        // 등수 계산
+        int rank = 1; // 초기 등수
+        int targetIndex = 0; // K번 국가의 배열 인덱스
+
+        for (int i = 0; i < n; i++) {
+            if (medalArray[i][0] == k) {
+                targetIndex = i;
+                break;
+            }
         }
-        System.out.println(number);
 
+        // 목표 국가보다 잘한 국가 수를 기준으로 등수 계산
+        for (int i = 0; i < targetIndex; i++) {
+            if (medalArray[i][1] > medalArray[targetIndex][1]
+                || (medalArray[i][1] == medalArray[targetIndex][1]
+                    && medalArray[i][2] > medalArray[targetIndex][2])
+                || (medalArray[i][1] == medalArray[targetIndex][1]
+                    && medalArray[i][2] == medalArray[targetIndex][2]
+                    && medalArray[i][3] > medalArray[targetIndex][3])) {
+                rank++;
+            }
+        }
 
-
-
-        // 잘못된 접근, 잘못된 문법
-//        while(tryNumber!=0) {
-//            String inputData = scanner.nextLine().trim();
-//            medalArray[index][] = inputData.split(" ");
-//            tryNumber--;
-//            index++;
-//        }
+        // 결과 출력
+        System.out.println(rank);
     }
 }
